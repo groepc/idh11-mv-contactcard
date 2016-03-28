@@ -1,7 +1,9 @@
 package miekevadiem.edu.contactcard;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,40 +22,37 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener {
 
-    private ListView listView;
-    private List<String> contactList = new ArrayList<>();
+    private ContactDBHandler dbh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        contactList.add("foo");
-        contactList.add("bar");
-        contactList.add("baz");
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, contactList);
-
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setOnItemClickListener(this);
-        listView.setAdapter(arrayAdapter);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    public void onFragmentInteraction(String msg) {
+        Log.i("onFragmentInteraction", msg);
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // check if detail view exists
+        DetailFragment contactDetailFragment = (DetailFragment) getFragmentManager().findFragmentById(R.id.contact_detail_fragment);
 
-        Intent i = new Intent(getApplicationContext(), DetailActivity.class);
-        startActivity(i);
-        overridePendingTransition(R.anim.animation_right_to_center, R.anim.animation_center_to_left);
+        if (contactDetailFragment != null ) {
+            contactDetailFragment.setContactView("Hallo wereld");
+        } else {
+
+//            DetailFragment newContactDetailFragment = new DetailFragment();
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.replace(R.id.contact_list_fragment, newContactDetailFragment);
+//            transaction.addToBackStack(null);
+
+            // Commit
+//            transaction.commit();
+        }
+
+
 
 
     }
