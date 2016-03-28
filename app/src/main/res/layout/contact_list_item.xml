@@ -9,7 +9,8 @@
         android:layout_height="76dp"
         android:id="@+id/contactAvatar"
         android:background="#ff0303"
-        android:contentDescription="Contact avatar" />
+        android:contentDescription="Contact avatar"
+        android:src="@drawable/silhouette" />
 
     <LinearLayout
         android:orientation="vertical"

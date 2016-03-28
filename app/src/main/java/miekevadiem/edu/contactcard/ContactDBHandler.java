@@ -33,42 +33,29 @@ public class ContactDBHandler extends SQLiteAssetHelper {
         setForcedUpgrade(2);
     }
 
+    /**
+     * READ
+     */
     public ArrayList<Contact> getAllContacts() {
         ArrayList<Contact> contactList = new ArrayList<Contact>();
 
         Cursor cursor = fetchAllContacts();
         cursor.moveToFirst();
         while( cursor.moveToNext() ) {
-            Contact contact = new Contact();
-
-            contact.setFirstName(cursor.getString(cursor.getColumnIndex(COLOMN_FIRSTNAME)));
-            contact.setLastName(cursor.getString(cursor.getColumnIndex(COLOMN_LASTNAME)));
-            contact.setEmail(cursor.getString(cursor.getColumnIndex(COLOMN_EMAIL)));
-            contact.setImageUrl(cursor.getString(cursor.getColumnIndex(COLOMN_IMAGEURL)));
-
-            contactList.add(contact);
+            contactList.add(mapToContact(cursor));
         }
 
         return contactList;
     }
 
-    private Cursor fetchAllContacts() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + DB_TABLE_NAME;
-
-        Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
-        db.close();
-        return c;
+    public Contact getContactByEmail(String contactEmail) {
+        Cursor cursor = fetchSingleContactByEmail(contactEmail);
+        return mapToContact(cursor);
     }
 
-    public void addContacts() {
-        Contact contact1 = new Contact("Vadiem", "Janssens", "vadiem@webcolors.nl");
-        Contact contact2 = new Contact("Mieke", "van Doorneveld", "mieke@avans.nl");
-        this.addContact(contact1);
-        this.addContact(contact2);
-    }
-
+    /**
+     * CREATE
+     */
     public void addContact(Contact contact) {
         ContentValues values = new ContentValues();
         values.put(COLOMN_FIRSTNAME, contact.getFirstName());
@@ -81,10 +68,38 @@ public class ContactDBHandler extends SQLiteAssetHelper {
         db.close();
     }
 
-    public Contact getContactByEmail(String contactEmail) {
 
+    /**
+     * Map a DB cursor to a contact object
+     */
+    private Contact mapToContact(Cursor cursor) {
+        Contact contact = new Contact();
 
+        contact.setFirstName(cursor.getString(cursor.getColumnIndex(COLOMN_FIRSTNAME)));
+        contact.setLastName(cursor.getString(cursor.getColumnIndex(COLOMN_LASTNAME)));
+        contact.setEmail(cursor.getString(cursor.getColumnIndex(COLOMN_EMAIL)));
+        contact.setImageUrl(cursor.getString(cursor.getColumnIndex(COLOMN_IMAGEURL)));
 
-        return null;
+        return contact;
+    }
+
+    private Cursor fetchSingleContactByEmail(String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + DB_TABLE_NAME + " WHERE " + COLOMN_EMAIL + "='" + email + "';";
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        db.close();
+        return c;
+    }
+
+    private Cursor fetchAllContacts() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + DB_TABLE_NAME;
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        db.close();
+        return c;
     }
 }

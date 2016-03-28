@@ -6,11 +6,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
 
     private ContactDBHandler dbh;
     private Contact contact;
+
+    private TextView contactNameText;
+    private TextView contactEmailText;
 
     public static DetailFragment newInstance() {
         DetailFragment fragment = new DetailFragment();
@@ -37,6 +42,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.contact_detail_fragment, container, false);
+        contactNameText = (TextView) view.findViewById(R.id.contactName);
+        contactEmailText = (TextView) view.findViewById(R.id.contactEmail);
 
         return view;
     }
@@ -52,7 +59,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         dbh = new ContactDBHandler(getActivity().getApplicationContext());
         contact = dbh.getContactByEmail(contactEmail);
 
-
+        contactNameText.setText(contact.getFullName());
+        contactEmailText.setText(contact.getEmail());
     }
 
     public interface OnFragmentInteractionListener {

@@ -12,18 +12,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
+    // views
     private ListView contactListView;
+    private RelativeLayout loadingLayout;
+
+    // variables
     private ArrayList<Contact> contactList = new ArrayList<>();
     private ContactListAdapter arrayAdapter;
-
     private ContactDBHandler dbh;
 
+    // listeners
     private OnFragmentInteractionListener mListener;
 
     @Override
@@ -31,6 +36,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         super.onCreate(savedInstanceState);
 
         dbh = new ContactDBHandler(getActivity().getApplicationContext());
+        dbh.addContact(new Contact("Vadiem", "Janssens", "info@vadiemjanssens.nl"));
         contactList = dbh.getAllContacts();
     }
 
@@ -48,6 +54,13 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         contactListView = (ListView) view.findViewById(R.id.contact_list);
         contactListView.setOnItemClickListener(this);
         contactListView.setAdapter(arrayAdapter);
+
+        if(arrayAdapter.getCount() == 0) {
+            loadingLayout = (RelativeLayout) view.findViewById(R.id.loadingLayout);
+            loadingLayout.setVisibility(View.VISIBLE);
+
+
+        }
 
         return view;
     }
