@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_light">
+    android:background="@android:color/holo_orange_light"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Contact detail fragment"
-        android:id="@+id/textView" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Contact name"
+        android:id="@+id/contactName"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:scrollHorizontally="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Contact email"
+        android:id="@+id/contactEmail"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:scrollHorizontally="true" />
+
 </LinearLayout>

@@ -1,7 +1,7 @@
 package miekevadiem.edu.contactcard;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,11 +30,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dbh = ContactDBHandler.getInstance(getActivity().getApplicationContext());
-
-        Contact contact1 = new Contact("Vadiem", "Janssens", "vadiem@webcolors.nl");
-        dbh.addContact(contact1);
-
+        dbh = new ContactDBHandler(getActivity().getApplicationContext());
         contactList = dbh.getAllContacts();
     }
 
@@ -75,8 +71,8 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mListener.onFragmentInteraction("hello world!");
-        Log.i("OnItemClick()", "Position " + position + " was clicked.");
+        Contact contact = arrayAdapter.getItem(position);
+        mListener.onFragmentInteraction(contact.getEmail());
     }
 
     public interface OnFragmentInteractionListener {

@@ -1,13 +1,16 @@
 package miekevadiem.edu.contactcard;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
+
+    private ContactDBHandler dbh;
+    private Contact contact;
 
     public static DetailFragment newInstance() {
         DetailFragment fragment = new DetailFragment();
@@ -19,7 +22,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     }
 
     public DetailFragment() {
-        // Required empty public constructor
         Log.i("DetailFragment()", "Constructor");
     }
 
@@ -44,8 +46,13 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void setContactView(String contact) {
-        Log.i("setContactView()", contact);
+    public void setContactView(String contactEmail) {
+        Log.i("setContactView()", contactEmail);
+
+        dbh = new ContactDBHandler(getActivity().getApplicationContext());
+        contact = dbh.getContactByEmail(contactEmail);
+
+
     }
 
     public interface OnFragmentInteractionListener {

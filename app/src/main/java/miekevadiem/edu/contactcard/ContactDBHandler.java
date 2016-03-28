@@ -7,59 +7,30 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class ContactDBHandler extends SQLiteOpenHelper {
+public class ContactDBHandler extends SQLiteAssetHelper {
 
     private static ContactDBHandler sInstance;
 
     private static final String TAG = "ContactDBHandler";
 
-    private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "contact.db";
+    private static final int DB_VERSION = 2;
+    private static final String DB_NAME = "contacts.db";
     private static final String DB_TABLE_NAME = "contacts";
 
-    private static final String COLOMN_ID = "_id";  // primary key, auto increment
+    private static final String COLOMN_ID = "_id";
     private static final String COLOMN_FIRSTNAME = "firstName";
     private static final String COLOMN_LASTNAME = "lastName";
     private static final String COLOMN_EMAIL = "email";
     private static final String COLOMN_IMAGEURL = "imageUrl";
 
-    public static synchronized ContactDBHandler getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new ContactDBHandler(context.getApplicationContext());
-        }
-        return sInstance;
-    }
-
-    private ContactDBHandler(Context context) {
+    public ContactDBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-    }
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
-        onCreate(db);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACT_TABLE = "CREATE TABLE " + DB_TABLE_NAME +
-                "(" +
-                COLOMN_ID + " INTEGER PRIMARY KEY," +
-                COLOMN_FIRSTNAME + " TEXT," +
-                COLOMN_LASTNAME + " TEXT," +
-                COLOMN_EMAIL + " TEXT," +
-                COLOMN_IMAGEURL + " TEXT" +
-                ")";
-        db.execSQL(CREATE_CONTACT_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
-        onCreate(db);
+        setForcedUpgrade(2);
     }
 
     public ArrayList<Contact> getAllContacts() {
@@ -108,5 +79,12 @@ public class ContactDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(DB_TABLE_NAME, null, values);
         db.close();
+    }
+
+    public Contact getContactByEmail(String contactEmail) {
+
+
+
+        return null;
     }
 }
