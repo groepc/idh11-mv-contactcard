@@ -1,14 +1,8 @@
 package miekevadiem.edu.contactcard;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.support.v7.app.AppCompatActivity;
 
 public class DetailActivity extends AppCompatActivity {
 
