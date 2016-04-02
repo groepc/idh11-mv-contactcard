@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ContactDBHandler extends SQLiteAssetHelper {
 
@@ -53,6 +54,14 @@ public class ContactDBHandler extends SQLiteAssetHelper {
     /**
      * CREATE
      */
+
+    public void addContacts(ArrayList<Contact> contacts) {
+        Iterator<Contact> iterator = contacts.iterator();
+        while (iterator.hasNext()) {
+            addContact(iterator.next());
+        }
+    }
+
     public void addContact(Contact contact) {
         ContentValues values = new ContentValues();
         values.put(COLOMN_FIRSTNAME, contact.getFirstName());

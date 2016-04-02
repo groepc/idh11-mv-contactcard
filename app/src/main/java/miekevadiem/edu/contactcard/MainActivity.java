@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
             randomUserApi.getResults(new RandomUserApi.ApiResponseListener() {
                 @Override
                 public void getResult(ArrayList contacts) {
-                    contactList = contacts;
+                    contactDbHandler.addContacts(contacts);
+                    contactList = contactDbHandler.getAllContacts();
                     addListItems();
                 }
             });

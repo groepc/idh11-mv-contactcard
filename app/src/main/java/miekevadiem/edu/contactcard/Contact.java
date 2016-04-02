@@ -7,11 +7,11 @@ public class Contact {
     public String email;
     public String imageUrl;
 
-    public Contact(String firstName, String lastName, String email) {
+    public Contact(String firstName, String lastName, String email, String imageUrl) {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setEmail(email);
-        this.setImageUrl(null);
+        this.setImageUrl(imageUrl);
     }
 
     public Contact() {

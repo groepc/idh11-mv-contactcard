@@ -1,6 +1,7 @@
 package miekevadiem.edu.contactcard;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,14 @@ public class ContactListAdapter extends BaseAdapter {
     LayoutInflater mInflator;
     ArrayList<Contact> contactArrayList;
 
+    private RandomUserApi randomUserApi;
+
     public ContactListAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Contact> contacts) {
         this.context = context;
         this.mInflator = layoutInflater;
         this.contactArrayList = contacts;
+
+        randomUserApi = RandomUserApi.getInstance(this.context);
     }
 
     @Override
@@ -40,7 +45,7 @@ public class ContactListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if(convertView == null) {
             convertView = mInflator.inflate(R.layout.contact_list_item, null);
@@ -57,9 +62,15 @@ public class ContactListAdapter extends BaseAdapter {
 
         Contact contact = contactArrayList.get(position);
 
+        randomUserApi.getImage(contact.getImageUrl(), new RandomUserApi.ApiImageResponseListener() {
+            @Override
+            public void getResult(Bitmap bitmap) {
+                viewHolder.contactAvatar.setImageBitmap(bitmap);
+            }
+        });
+
         viewHolder.contactName.setText(contact.getFirstName());
         viewHolder.contactEmail.setText(contact.getEmail());
-        viewHolder.contactAvatar = null;
 
         return convertView;
     }

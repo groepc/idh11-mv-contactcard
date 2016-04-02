@@ -2,11 +2,14 @@ package miekevadiem.edu.contactcard;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -47,7 +50,7 @@ public class RandomUserApi {
     }
 
     public void getResults(final ApiResponseListener<String> listener) {
-        String path = "?results=10&nat=nl";
+        String path = "?results=25&nat=nl";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, endpoint + path, null, new Response.Listener<JSONObject>() {
@@ -82,17 +85,45 @@ public class RandomUserApi {
         requestQueue.add(jsObjRequest);
     }
 
-    public interface ApiResponseListener<T>
-    {
-        void getResult(ArrayList<Contact> contacts);
-    }
+
 
     public Contact JSONtoContact(JSONObject jsonContact) throws JSONException {
         String first = jsonContact.getJSONObject("user").getJSONObject("name").getString("first");
         String last = jsonContact.getJSONObject("user").getJSONObject("name").getString("last");
         String email = jsonContact.getJSONObject("user").getString("email");
+        String imageUrl = jsonContact.getJSONObject("user").getJSONObject("picture").getString("medium");
 
-        Contact contact = new Contact(first, last, email);
+        Contact contact = new Contact(first, last, email, imageUrl);
         return contact;
     }
+
+
+    public void getImage(String url, final ApiImageResponseListener listener) {
+        ImageRequest request = new ImageRequest(url,
+            new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap bitmap) {
+                    listener.getResult(bitmap);
+                }
+            }, 0, 0, Bitmap.Config.RGB_565,
+            new Response.ErrorListener() {
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println(error);
+                }
+            });
+
+        requestQueue.add(request);
+    }
+
+    public interface ApiResponseListener<T>
+    {
+        void getResult(ArrayList<Contact> contacts);
+    }
+
+    public interface ApiImageResponseListener<T>
+    {
+        void getResult(Bitmap bitmap);
+    }
+
+
 }

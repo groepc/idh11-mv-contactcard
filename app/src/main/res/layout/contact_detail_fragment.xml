@@ -2,30 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_light"
+    android:background="#ffffff"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Selecteer eerst een contact"
-        android:id="@+id/contactName"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:scrollHorizontally="true" />
+    <ImageView
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:id="@+id/contactAvatar"
+        android:background="#eeeeee"
+        android:src="@drawable/silhouette" />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/contactEmail"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:scrollHorizontally="true" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Selecteer eerst een contact"
+            android:id="@+id/contactName"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/contactEmail"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true" />
+    </LinearLayout>
 
 </LinearLayout>
