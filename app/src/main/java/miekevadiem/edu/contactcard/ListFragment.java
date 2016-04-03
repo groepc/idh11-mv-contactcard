@@ -3,7 +3,6 @@ package miekevadiem.edu.contactcard;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,9 +79,9 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         contactListView.setOnItemClickListener(this);
         contactListView.setAdapter(arrayAdapter);
 
-        if(arrayAdapter.getCount() == 0) {
-            loadingLayout = (RelativeLayout) view.findViewById(R.id.loadingLayout);
-            loadingLayout.setVisibility(View.VISIBLE);
-        }
+//        if(arrayAdapter.getCount() == 0) {
+//            loadingLayout = (RelativeLayout) view.findViewById(R.id.loadingLayout);
+//            loadingLayout.setVisibility(View.VISIBLE);
+//        }
     }
 }

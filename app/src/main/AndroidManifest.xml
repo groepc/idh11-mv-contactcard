@@ -18,14 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".DetailActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-
 </manifest>

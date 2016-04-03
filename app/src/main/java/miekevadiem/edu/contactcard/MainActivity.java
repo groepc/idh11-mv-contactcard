@@ -1,10 +1,15 @@
 package miekevadiem.edu.contactcard;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 
@@ -21,7 +26,11 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_layout);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Contact Card");
 
         contactDbHandler = new ContactDBHandler(getApplicationContext());
         contactList = contactDbHandler.getAllContacts();
@@ -74,5 +83,36 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
             startActivity(intent);
             overridePendingTransition(R.anim.animation_right_to_center, R.anim.animation_center_to_left);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_view_menu_item, menu);
+        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewAndroidActionBar.clearFocus();
+                contactList = contactDbHandler.findContacts(query);
+                addListItems();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query)
+            {
+                contactList = contactDbHandler.findContacts(query);
+                addListItems();
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+
     }
 }

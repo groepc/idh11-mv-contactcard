@@ -35,15 +35,14 @@ public class ContactDBHandler extends SQLiteAssetHelper {
      * READ
      */
     public ArrayList<Contact> getAllContacts() {
-        ArrayList<Contact> contactList = new ArrayList<Contact>();
-
         Cursor cursor = fetchAllContacts();
-        cursor.moveToFirst();
-        while( cursor.moveToNext() ) {
-            contactList.add(mapToContact(cursor));
-        }
+        return mapToContactList(cursor);
+    }
 
-        return contactList;
+    public ArrayList<Contact> findContacts(String query) {
+        Cursor cursor = fetchContactsByQuery(query);
+
+        return mapToContactList(cursor);
     }
 
     public Contact getContactByEmail(String contactEmail) {
@@ -54,7 +53,6 @@ public class ContactDBHandler extends SQLiteAssetHelper {
     /**
      * CREATE
      */
-
     public void addContacts(ArrayList<Contact> contacts) {
         Iterator<Contact> iterator = contacts.iterator();
         while (iterator.hasNext()) {
@@ -89,20 +87,56 @@ public class ContactDBHandler extends SQLiteAssetHelper {
         return contact;
     }
 
-    private Cursor fetchSingleContactByEmail(String email) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + DB_TABLE_NAME + " WHERE " + COLOMN_EMAIL + "='" + email + "';";
+    private ArrayList<Contact> mapToContactList(Cursor cursor) {
+        ArrayList<Contact> contactList = new ArrayList<>();
 
-        Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
-        db.close();
-        return c;
+        cursor.moveToFirst();
+
+        if(cursor.getCount() > 1) {
+            while( cursor.moveToNext() ) {
+                contactList.add(mapToContact(cursor));
+            }
+        }
+
+        if(cursor.getCount() == 1) {
+            contactList.add(mapToContact(cursor));
+        }
+
+        return contactList;
     }
 
-    private Cursor fetchAllContacts() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + DB_TABLE_NAME;
+    /**
+     * Query SQLite DB to find a user by it's e-mail
+     * @param email
+     * @return Cursor
+     */
+    private Cursor fetchSingleContactByEmail(String email) {
+        String sqlQuery = "SELECT * FROM " + DB_TABLE_NAME + " WHERE " + COLOMN_EMAIL + "='" + email + "'";
+        return queryDB(sqlQuery);
+    }
 
+    /**
+     * Query SQLite DB for all contacts
+     * @return
+     */
+    private Cursor fetchAllContacts() {
+        String sqlQuery = "SELECT * FROM " + DB_TABLE_NAME;
+        return queryDB(sqlQuery);
+    }
+
+    /**
+     * Find user where NAME LIKE
+     * @param query
+     * @return
+     */
+    private Cursor fetchContactsByQuery(String query) {
+        String sqlQuery = "SELECT * FROM " + DB_TABLE_NAME + " WHERE " + COLOMN_FIRSTNAME + " LIKE '%" + query + "%'";
+        System.out.println(sqlQuery);
+        return queryDB(sqlQuery);
+    }
+
+    private Cursor queryDB(String query) {
+        SQLiteDatabase db = this.getWritableDatabase();
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
         db.close();
